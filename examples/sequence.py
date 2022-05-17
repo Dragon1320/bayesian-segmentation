@@ -11,7 +11,7 @@ n = 20
 p = 0.7
 
 # priors
-# here we can define any prior assumptions/knowledge we might have that could influence our inference
+# here we can define any prior assumptions/knowledge that we have that could influence our inference
 # setting pri_a = pri_b = 1 in this case gives us a uniform distribution - an uninformative prior
 pri_a = 1
 pri_b = 1
@@ -33,7 +33,7 @@ def infer_prob_seq(seq, x, pri_a, pri_b):
 	assert(n == heads + tails)
 
 	# this is just subbing params into our formula
-	# notice how we replace theta with x (we want to calculate the P(theta = x))
+	# notice how we replace theta with x (we want to calculate P(theta = x))
 	p = ((gamma(n + pri_a + pri_b)) / (gamma(heads + pri_a) * gamma(n - heads + pri_b))) * (x ** (heads + pri_a - 1)) * ((1 - x) ** (tails + pri_b - 1))
 
 	return p
@@ -42,7 +42,7 @@ def infer_prob_seq(seq, x, pri_a, pri_b):
 seq = generate_example_seq(n, p)
 print("sequence: %s" % (seq))
 
-# since P(theta) is continuous, we need to sample it at some interval
+# since the PDF of P(theta) is continuous, we need to sample it at some interval
 i = 0.05
 
 scale_x = np.arange(0, 1 + i, i)

@@ -77,7 +77,7 @@ def infer_prob_num_brks(seq, num_brks, cats):
   assert(num_brks >= 0)
   assert(num_brks <= 2)
 
-  # this is our first prior
+  # this is our second prior
   # all the segmentations (ie. ways to divide up a sequence given k breakpoints) are assumed equally likely
   pri_segmentation = get_pri_segmentation(num_brks, len(seq) - 1)
 
@@ -124,7 +124,7 @@ print("sequence: %s" % ("".join(seq)))
 p_brks = []
 
 for num_brks in range(3):
-  # this is our second prior
+  # this is our first prior
   # higher number of breakpoints are assumed to be less likely
   pri_num_brks = get_pri_num_brks(num_brks)
 

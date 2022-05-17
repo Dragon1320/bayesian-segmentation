@@ -25,8 +25,8 @@ def generate_example_seq(n1, n2, p1, p2):
 
   return seq
 
-# probability of observing the given sequence - this is the only part that changes (in line with the formulae shown)
-# again, were only calculating values based on the observed sequence and plugging them into a formula
+# probability of observing the given sequence - this is the only part that has changed (in line with the formulae shown)
+# again, were only calculating values based on an observed sequence and plugging them into a formula
 def infer_prob_seq(seq, cats):
 	n = len(seq)
 
