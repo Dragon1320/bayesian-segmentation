@@ -88,9 +88,6 @@ for sub_seq in [left, right]:
 return p * pri_brk
 ```
 
-### TODO: this needs changed
-### TODO: better diagram style
-
 ### Explanation
 
 To get an intuitive understanding of the process, let's consider the following sequence of heads (1s) and tails (0s). The breakpoint is indicated with a |. On the left of the breakpoint $P(heads) = \theta_1$, while on the right of the breakpoint $P(heads) = \theta_2$.
