@@ -147,13 +147,17 @@ infer_prob_num_brks(seq, kmax, cats, dp)
 p_obs, p_brks = infer_prob_all_brks(seq, kmax, cats, dp)
 
 # plotting
-scale_x = np.arange(kmax)
+scale_x = np.arange(kmax + 1)
 scale_y = []
 
 for x in scale_x:
   y = p_brks[x]
 
   scale_y.append(y)
+
+plt.title("inferring the number of breakpoints")
+plt.xlabel("number of breakpoints")
+plt.ylabel("probability")
 
 plt.bar(scale_x, scale_y)
 plt.savefig("dynamic_programming.png")

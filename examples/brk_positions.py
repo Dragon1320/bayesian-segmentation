@@ -188,4 +188,4 @@ num_brks = np.argmax(p_brks)
 brk_locs = get_brk_locations(seq, num_brks, cats, dp)
 
 # just print breakpoint locations
-print("breakpoints: %s" % (brk_locs))
+print("breakpoint locations: %s" % (brk_locs))

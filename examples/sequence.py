@@ -54,5 +54,9 @@ for x in scale_x:
 
 	scale_y.append(p)
 
+plt.title("inferring the value of theta")
+plt.xlabel("value of theta")
+plt.ylabel("probability")
+
 plt.plot(scale_x, scale_y)
 plt.savefig("sequence.png")

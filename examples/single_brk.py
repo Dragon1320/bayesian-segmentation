@@ -75,5 +75,9 @@ for x in scale_x:
 
   scale_y.append(y)
 
+plt.title("finding a single breakpoint")
+plt.xlabel("position in sequence")
+plt.ylabel("probability of breakpoint")
+
 plt.bar(scale_x, scale_y)
 plt.savefig("single_brk.png")

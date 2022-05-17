@@ -143,7 +143,9 @@ for x in scale_x:
 
   scale_y.append(y)
 
+plt.title("inferring the number of breakpoints")
+plt.xlabel("number of breakpoints")
+plt.ylabel("probability")
+
 plt.bar(scale_x, scale_y)
 plt.savefig("brute_force.png")
-
-# TODO: i think one of the calculations here might be a lil bugged
