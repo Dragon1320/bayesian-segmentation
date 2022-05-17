@@ -15,8 +15,8 @@ p2 = 0
 
 # にゃ～
 cats = {
-	"_": 1,
-	"*": 1,
+  "_": 1,
+  "*": 1,
 }
 
 def generate_example_seq(n1, n2, p1, p2):
@@ -27,49 +27,49 @@ def generate_example_seq(n1, n2, p1, p2):
 
 # the prior for P(K) - priors can be functions too!
 def get_pri_num_brks(num_brks):
-	p = 0.5 / (num_brks + 1)
+  p = 0.5 / (num_brks + 1)
 
-	return p
+  return p
 
 # the prior for P(A | K)
 def get_pri_segmentation(num_brks, seq_len):
-	p = comb(seq_len, num_brks) ** -1
+  p = comb(seq_len, num_brks) ** -1
 
-	return p
+  return p
 
 # probability of observing the given sequence
 def infer_prob_seq(seq, cats):
-	n = len(seq)
+  n = len(seq)
 
-	pri_sum = 0
-	pri_gamma_mul = 1
+  pri_sum = 0
+  pri_gamma_mul = 1
 
-	counts = {}
-	n_counts = 0
+  counts = {}
+  n_counts = 0
 
-	for cat, pri in cats.items():
-		count = seq.count(cat)
+  for cat, pri in cats.items():
+    count = seq.count(cat)
 
-		counts[cat] = count
-		n_counts += count
+    counts[cat] = count
+    n_counts += count
 
-		pri_sum += pri
-		pri_gamma_mul *= gamma(pri)
+    pri_sum += pri
+    pri_gamma_mul *= gamma(pri)
 
-	# ensure that there are no symbols in the sequence that
-	# are not listed and given a prior probability in cats
-	assert(n == n_counts)
+  # ensure that there are no symbols in the sequence that
+  # are not listed and given a prior probability in cats
+  assert(n == n_counts)
 
-	p_mul = 1
+  p_mul = 1
 
-	for cat, pri in cats.items():
-		count = counts[cat]
+  for cat, pri in cats.items():
+    count = counts[cat]
 
-		p_mul *= gamma(count + pri)
+    p_mul *= gamma(count + pri)
 
-	p = (gamma(pri_sum) / pri_gamma_mul) * (p_mul / gamma(n + pri_sum))
+  p = (gamma(pri_sum) / pri_gamma_mul) * (p_mul / gamma(n + pri_sum))
 
-	return p
+  return p
 
 # this calculates the probability of the sequence having k breakpoints
 # we use a brute-force approach here which clearly is not scalable

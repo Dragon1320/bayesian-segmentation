@@ -45,7 +45,7 @@ def infer_prob_brk(seq, pos, pri_brk, pri_a, pri_b):
   p = 1
 
   for sub_seq in [left, right]:
-	  p *= infer_prob_seq(sub_seq, pri_a, pri_b)
+    p *= infer_prob_seq(sub_seq, pri_a, pri_b)
 
   return p * pri_brk
 

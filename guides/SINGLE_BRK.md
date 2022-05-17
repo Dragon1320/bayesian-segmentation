@@ -93,14 +93,20 @@ return p * pri_brk
 
 ### Explanation
 
-To get an intuitive understanding on the process, let's consider the following scenario. The true breakpoint is marked in blue.
+To get an intuitive understanding of the process, let's consider the following sequence of heads (1s) and tails (0s). The breakpoint is indicated with a |. On the left of the breakpoint $P(heads) = \theta_1$, while on the right of the breakpoint $P(heads) = \theta_2$.
 
-Here we calculate the probability of a breakpoint at the red mark. The probability of heads/tails in the sequence left of the mark will be $\theta_1$. However, in the sequence right of the mark, this will be a mixture of $\theta_1$ and $\theta_2$. Therefore, for any given $\theta$, the probability of observing the sequence on the right will be low.
+```
+# case 1
+1 1 1 1 1|0 0 0 0 0
+left ^ right
 
-The maximum value of $P(left) * P(right)$ can be obtained when both $left$ and $right$ where created from a single value of $\theta$ respectively (and not a mixture of $\theta_1$ and $\theta_2$).
+# case 2
+1 1 1 1 1|0 0 0 0 0
+    left ^ right
+```
 
-This maximum value will be the location of our breakpoint - where the value of $\theta$ changes.
+Let's say we split the sequence in case 1 based on the position of ^ into a left and right part. $P(heads)$ in the left sequence will be dependent only on $\theta_1$. However, $P(heads)$ in the right sequence will be dependent on a mixture of $\theta_1$ and $\theta_2$. Therefore, $P(right)$ for any single value of $\theta$ will be low - the sequence cannot be described using a single $\theta$ and is a mixture.
 
-![](https://cdn.discordapp.com/attachments/209040403918356481/975808219932934144/unknown.png)
+In case 2, $P(heads)$ in both left and right is dependent only on $\theta_1$ and $\theta_2$ respectively. Nether left nor right was created based on multiple values of $\theta$. Therefore, the value of $P(left) P(right)$ will be maximised at the location of a breakpoint - the point at which sequence on either side was created using a single $\theta$.
 
 A fully working example can be found in `single_brk.py`.

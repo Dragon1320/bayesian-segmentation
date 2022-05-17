@@ -14,8 +14,8 @@ p2 = 0.1
 
 # にゃ～
 cats = {
-	"_": 1,
-	"*": 1,
+  "_": 1,
+  "*": 1,
 }
 
 # generate an example sequence of _s and *s instead
@@ -28,37 +28,37 @@ def generate_example_seq(n1, n2, p1, p2):
 # probability of observing the given sequence - this is the only part that has changed (in line with the formulae shown)
 # again, were only calculating values based on an observed sequence and plugging them into a formula
 def infer_prob_seq(seq, cats):
-	n = len(seq)
+  n = len(seq)
 
-	pri_sum = 0
-	pri_gamma_mul = 1
+  pri_sum = 0
+  pri_gamma_mul = 1
 
-	counts = {}
-	n_counts = 0
+  counts = {}
+  n_counts = 0
 
-	for cat, pri in cats.items():
-		count = seq.count(cat)
+  for cat, pri in cats.items():
+    count = seq.count(cat)
 
-		counts[cat] = count
-		n_counts += count
+    counts[cat] = count
+    n_counts += count
 
-		pri_sum += pri
-		pri_gamma_mul *= gamma(pri)
+    pri_sum += pri
+    pri_gamma_mul *= gamma(pri)
 
-	# ensure that there are no symbols in the sequence that
-	# are not listed and given a prior probability in cats
-	assert(n == n_counts)
+  # ensure that there are no symbols in the sequence that
+  # are not listed and given a prior probability in cats
+  assert(n == n_counts)
 
-	p_mul = 1
+  p_mul = 1
 
-	for cat, pri in cats.items():
-		count = counts[cat]
+  for cat, pri in cats.items():
+    count = counts[cat]
 
-		p_mul *= gamma(count + pri)
+    p_mul *= gamma(count + pri)
 
-	p = (gamma(pri_sum) / pri_gamma_mul) * (p_mul / gamma(n + pri_sum))
+  p = (gamma(pri_sum) / pri_gamma_mul) * (p_mul / gamma(n + pri_sum))
 
-	return p
+  return p
 
 # this part remains exactly the same
 def infer_prob_brk(seq, pos, pri_brk, cats):
@@ -70,7 +70,7 @@ def infer_prob_brk(seq, pos, pri_brk, cats):
   p = 1
 
   for sub_seq in [left, right]:
-	  p *= infer_prob_seq(sub_seq, cats)
+    p *= infer_prob_seq(sub_seq, cats)
 
   return p * pri_brk
 

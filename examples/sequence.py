@@ -24,19 +24,19 @@ def generate_example_seq(n, p):
 
 # calculate the probability of theta = x, given some sequence and priors
 def infer_prob_seq(seq, x, pri_a, pri_b):
-	# calculate values required for our algo based on the observed data
-	n = len(seq)
-	heads = (seq == 1).sum()
-	tails = (seq == 0).sum()
+  # calculate values required for our algo based on the observed data
+  n = len(seq)
+  heads = (seq == 1).sum()
+  tails = (seq == 0).sum()
 
   # ensure sequence only consists of 1s and 0s
-	assert(n == heads + tails)
+  assert(n == heads + tails)
 
-	# this is just subbing params into our formula
-	# notice how we replace theta with x (we want to calculate P(theta = x))
-	p = ((gamma(n + pri_a + pri_b)) / (gamma(heads + pri_a) * gamma(n - heads + pri_b))) * (x ** (heads + pri_a - 1)) * ((1 - x) ** (tails + pri_b - 1))
+  # this is just subbing params into our formula
+  # notice how we replace theta with x (we want to calculate P(theta = x))
+  p = ((gamma(n + pri_a + pri_b)) / (gamma(heads + pri_a) * gamma(n - heads + pri_b))) * (x ** (heads + pri_a - 1)) * ((1 - x) ** (tails + pri_b - 1))
 
-	return p
+  return p
 
 # calculations and plotting
 seq = generate_example_seq(n, p)
@@ -50,9 +50,9 @@ scale_y = []
 
 # calculate the probability of theta = x, for all values of x between 0 and 1
 for x in scale_x:
-	p = infer_prob_seq(seq, x, pri_a, pri_b)
+  p = infer_prob_seq(seq, x, pri_a, pri_b)
 
-	scale_y.append(p)
+  scale_y.append(p)
 
 plt.title("inferring the value of theta")
 plt.xlabel("value of theta")
