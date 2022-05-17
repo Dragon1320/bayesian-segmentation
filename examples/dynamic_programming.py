@@ -1,34 +1,40 @@
 from math import comb
 
-import numpy as np
 from mpmath import mp, gamma
 
-from prior import p_num_brks
+import numpy as np
+import matplotlib.pyplot as plt
 
 # for generating example data
 n1 = 40
 n2 = 40
-p1 = 0.9
-p2 = 0.1
+p1 = 1
+p2 = 0
 
-# priors (analogous to a = b = 1)
+# priors
+
+# にゃ～
 cats = {
 	"_": 1,
 	"*": 1,
 }
 
+# we will only calculate breakpoint probabilities until k = 5
+kmax = 5
+
 def generate_example_seq(n1, n2, p1, p2):
   seq = np.concatenate([np.random.binomial(1, p1, n1), np.random.binomial(1, p2, n2)])
-  # TODO: this is bad code!
   seq = ["_" if c == 0 else "*" for c in seq]
 
   return seq
 
+# the prior for P(K) - priors can be functions too!
 def get_pri_num_brks(num_brks):
 	p = 0.5 / (num_brks + 1)
 
 	return p
 
+# the prior for P(A | K)
 def get_pri_segmentation(num_brks, seq_len):
 	p = comb(seq_len, num_brks) ** -1
 
@@ -55,7 +61,6 @@ def infer_prob_seq(seq, cats):
 
 	# ensure that there are no symbols in the sequence that
 	# are not listed and given a prior probability in cats
-	# TODO: optimisation - realistically, this check only needs to be done once
 	assert(n == n_counts)
 
 	p_mul = 1
@@ -69,17 +74,7 @@ def infer_prob_seq(seq, cats):
 
 	return p
 
-
-
-
-
-
-
-
-
-
-# TODO: new!
-# TODO: consistent len
+# initialise the k = 0 base-case
 def init_dp_array(seq, kmax, cats):
 	# k starts at 0, account for this in the array size
 	# we need the big boi floats for the calcs were doing owo
@@ -90,7 +85,7 @@ def init_dp_array(seq, kmax, cats):
 		for v in range(j, len(seq)):
 			sub_seq = seq[j:v + 1]
 
-			p =  infer_prob_seq(sub_seq, 0, len(sub_seq), cats)
+			p =  infer_prob_seq(sub_seq, cats)
 
 			# these values should be treated the same as seq[j:v]
 			# namely, the element at idx v is not included
@@ -98,16 +93,13 @@ def init_dp_array(seq, kmax, cats):
 
 	return dp
 
-# TODO: new!
-# TODO: consistent naming
+# compose all the other calculations using our pre-calculated base-case
 def infer_prob_num_brks(seq, kmax, cats, dp):
 	# running this for anything else is dum
 	assert(kmax >= 1)
 	# this is important as we can only have as many breakpoints as n + 1 elements
 	# ie. we cannot have 2 breakpoints in a sequence composed of 2 elements
 	assert(kmax < len(seq))
-
-	# TODO: assert that dp was initialised with the same sequence
 
 	# now we use the stuff to calculate the other stuff
 	# very descriptive ik, im somewhat of a poet
@@ -117,7 +109,6 @@ def infer_prob_num_brks(seq, kmax, cats, dp):
 		for j in range(0, len(seq) - k):
 			p = 0
 
-			# TODO: link some diagram that explains how im calculating these
 			for s in range(j + 1, len(seq) - (k - 1)):
 				left = dp[0][j][s]
 				right = dp[k - 1][s][len(seq)]
@@ -126,35 +117,43 @@ def infer_prob_num_brks(seq, kmax, cats, dp):
 
 			dp[k][j][len(seq)] = p
 
-
-
-
-
-
-# TODO: new!
-def p_num_brks_given_sequence(seq, kmax, cats, dp):
-	# i could incorporate this stuff into p_sequence_given_num_brks but its cheap (only runs kmax times)
-	# and this way its more clear what im doing above - which is already difficult to understand
+# use all the dynamic programming calculations to get final probabilities for all breakpoint counts >= kmax
+def infer_prob_all_brks(seq, kmax, cats, dp):
 	p_brks = []
 
-	# TODO: ret k = 0 as well?
-	# TODO: is the final p calc correct? k set to the correct val everywhere?
-
-	# in case someone wanted to re-use a sub-sequence with the same dp array,
-	# len(seq) is used instead of -1
 	for k in range(0, kmax + 1):
-		# we set the length as len(seq) - 1, as otherwise it would allow for breakpoints at the start
-		# of the sequence (ie. before the first element), which is not what we want
-		p = dp[k][0][len(seq)] * p_segmentation_given_num_brks(len(seq) - 1, k)
+		# apply prior P(A | K)
+		p = dp[k][0][len(seq)] * get_pri_segmentation(k, len(seq) - 1)
 
-		# prior
-		pk = p_num_brks(k)
+		# apply prior P(K)
+		pk = get_pri_num_brks(k)
 
 		p_brks.append(p * pk)
 
-	# marginal probability
+	# calculate and apply marginal probability
 	pr = sum(p_brks)
 	p_brks = [p / pr for p in p_brks]
 
 	return pr, p_brks
 
+# calculations
+seq = generate_example_seq(n1, n2, p1, p2)
+print("sequence: %s" % ("".join(seq)))
+
+dp = init_dp_array(seq, kmax, cats)
+
+infer_prob_num_brks(seq, kmax, cats, dp)
+
+p_obs, p_brks = infer_prob_all_brks(seq, kmax, cats, dp)
+
+# plotting
+scale_x = np.arange(kmax)
+scale_y = []
+
+for x in scale_x:
+  y = p_brks[x]
+
+  scale_y.append(y)
+
+plt.bar(scale_x, scale_y)
+plt.savefig("dynamic_programming.png")
