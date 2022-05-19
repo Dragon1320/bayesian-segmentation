@@ -14,11 +14,11 @@ The following guide goes through all the steps required to implement a Bayesian 
 
 Guides should be read in the following order:
 
-- Sampling an unknown variable.
-- Finding a single breakpoint.
-- Extending the definition of a sequence.
-- Brute-forcing a more complex model.
-- Optimisations with dynamic programming.
-- Finding breakpoint locations.
+- [Sampling an unknown variable](guides/SEQUENCE.md)
+- [Finding a single breakpoint](guides/SINGLE_BRK.md)
+- [Extending the definition of a sequence](guides/MULTINOMIAL.md)
+- [Brute-forcing a more complex model](guides/BRUTE_FORCE.md)
+- [Optimisations with dynamic programming](guides/DYNAMIC_PROGRAMMING.md)
+- [Finding breakpoint locations](guides/BRK_POSITIONS.md)
 
 Good luck!
