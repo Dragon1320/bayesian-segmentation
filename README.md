@@ -8,6 +8,7 @@ The following guide goes through all the steps required to implement a Bayesian 
 - Working example code to be used together with the guides can be found in `/examples`.
 - Figures creates by running example code can be found in `/figures`.
 - Papers that the algorithms are based on can be found in `/papers`. I refer to these throughout the guides.
+- An optimised Rust implementation can be found in `/src`.
 - In case Katex isn't rendered correctly in your favourite code editor, I have provided HTML versions of the guides.
 
 ### Guides
